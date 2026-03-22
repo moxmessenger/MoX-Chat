@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>MoXMessenger · Next-Gen Chat Experience</title>
+  <!-- Font Awesome 6 (free) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+  /* HILANGKAN EFEK BIRU / TAP HIGHLIGHT */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* KHUSUS BUTTON & LINK */
+button,
+a {
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* SAAT DIKLIK / FOCUS */
+button:focus,
+button:active,
+a:focus,
+a:active {
+  outline: none;
+  box-shadow: none;
+}
+
+/* OPTIONAL: biar lebih clean di mobile */
+button,
+a {
+  -webkit-focus-ring-color: transparent;
+}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0A0C14;
+      font-family: 'Inter', 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      color: #EFF3FC;
+      line-height: 1.4;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    /* modern glass morphism & dark blue premium palette */
+    :root {
+      --bg-deep: #070B12;
+      --card-bg: rgba(18, 25, 45, 0.65);
+      --card-border: rgba(56, 89, 148, 0.35);
+      --primary-accent: #3E7BFA;
+      --primary-glow: #2B5FDE;
+      --text-light: #F0F4FF;
+      --text-muted: #9AA9C1;
+      --surface-dark: #0E121F;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    /* custom scroll */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0A0C14;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #2C3A5E;
+      border-radius: 8px;
+    }
+
+    /* smooth animation classes */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.8s cubic-bezier(0.2, 0.9, 0.3, 1.1), transform 0.7s ease-out;
+    }
+    .fade-up.appear {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 0;
+      flex-wrap: wrap;
+      gap: 20px;
+      border-bottom: 1px solid rgba(62, 123, 250, 0.2);
+      backdrop-filter: blur(2px);
+    }
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo-img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #1A2338, #0F1625);
+      padding: 4px;
+    }
+    .logo-text {
+      font-size: 1.85rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #FFFFFF, #B7D0FF);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .btn-outline-light {
+      background: transparent;
+      border: 1.5px solid rgba(62, 123, 250, 0.6);
+      color: #EFF3FC;
+      padding: 10px 24px;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.25s;
+      cursor: pointer;
+      backdrop-filter: blur(4px);
+    }
+    .btn-outline-light:hover {
+      background: rgba(62, 123, 250, 0.15);
+      border-color: #3E7BFA;
+      transform: scale(1.02);
+    }
+
+    /* hero section */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 70px 0 80px 0;
+    }
+    .hero-badge {
+      background: rgba(62, 123, 250, 0.2);
+      backdrop-filter: blur(4px);
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #B3D0FF;
+      margin-bottom: 28px;
+      display: inline-block;
+      border: 0.5px solid rgba(62, 123, 250, 0.4);
+    }
+    .hero h1 {
+      font-size: 3.8rem;
+      font-weight: 800;
+      line-height: 1.2;
+      background: linear-gradient(145deg, #FFFFFF, #C0D6FF);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      max-width: 950px;
+      letter-spacing: -0.02em;
+    }
+    .hero-desc {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 24px auto 32px;
+      font-weight: 400;
+    }
+    .cta-group {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 10px;
+    }
+    .btn-primary {
+      background: #3E7BFA;
+      border: none;
+      padding: 14px 36px;
+      border-radius: 48px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 10px 24px -10px #3E7BFA;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .btn-primary i {
+      font-size: 1rem;
+      transition: transform 0.2s;
+    }
+    .btn-primary:hover {
+      background: #2B5FDE;
+      transform: translateY(-3px);
+      box-shadow: 0 24px 32px -16px #1F4BC0;
+    }
+    .btn-primary:hover i {
+      transform: translateX(5px);
+    }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(62, 123, 250, 0.5);
+      padding: 14px 32px;
+      border-radius: 48px;
+      font-weight: 600;
+      color: #E0EAFF;
+      transition: all 0.25s;
+      cursor: pointer;
+    }
+    .btn-secondary:hover {
+      background: rgba(62, 123, 250, 0.2);
+      border-color: #3E7BFA;
+    }
+
+    /* UI preview section */
+    .preview-section {
+      margin: 60px 0 40px;
+    }
+    .section-title {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .section-sub {
+      text-align: center;
+      color: var(--text-muted);
+      margin-bottom: 48px;
+      font-size: 1.1rem;
+    }
+    .ui-preview-card {
+      background: rgba(12, 18, 30, 0.7);
+      backdrop-filter: blur(12px);
+      border-radius: 48px;
+      border: 1px solid rgba(62, 123, 250, 0.25);
+      padding: 20px;
+      box-shadow: 0 30px 40px -25px rgba(0,0,0,0.5);
+      transition: all 0.4s ease;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .ui-preview-card:hover {
+      border-color: rgba(62, 123, 250, 0.6);
+      transform: scale(1.01);
+    }
+    .mockup-img {
+      width: 100%;
+      border-radius: 32px;
+      background: #101624;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 320px;
+      background: linear-gradient(145deg, #111826, #0C1120);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .chat-ui-demo {
+      background: #0E121F;
+      border-radius: 32px;
+      overflow: hidden;
+      box-shadow: 0 20px 35px -10px black;
+      width: 100%;
+    }
+    .chat-header-demo {
+      background: #0F1625;
+      padding: 16px 24px;
+      border-bottom: 1px solid #202A3F;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .chat-bubbles {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .bubble {
+      max-width: 75%;
+      padding: 12px 18px;
+      border-radius: 24px;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    .bubble.in {
+      background: #1A2338;
+      align-self: flex-start;
+      border-bottom-left-radius: 6px;
+      color: #EFF3FC;
+    }
+    .bubble.out {
+      background: #2B5FDE;
+      align-self: flex-end;
+      border-bottom-right-radius: 6px;
+      color: white;
+    }
+    /* features grid */
+    .features-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+      justify-content: center;
+      margin: 60px 0 70px;
+    }
+    .feature-card {
+      background: rgba(18, 25, 45, 0.6);
+      backdrop-filter: blur(8px);
+      border-radius: 36px;
+      padding: 32px 28px;
+      width: 280px;
+      border: 1px solid rgba(62, 123, 250, 0.2);
+      transition: all 0.3s;
+      text-align: center;
+    }
+    .feature-card:hover {
+      transform: translateY(-8px);
+      border-color: #3E7BFA;
+      background: rgba(30, 45, 75, 0.5);
+    }
+    .feature-icon {
+      font-size: 2.6rem;
+      color: #3E7BFA;
+      margin-bottom: 20px;
+    }
+    .feature-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+    .feature-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    /* CTA section */
+    .cta-section {
+      background: radial-gradient(circle at 30% 10%, #0C1222, #05080F);
+      border-radius: 64px;
+      margin: 40px 0 80px;
+      padding: 70px 40px;
+      text-align: center;
+      border: 1px solid rgba(62, 123, 250, 0.3);
+      backdrop-filter: blur(4px);
+    }
+    .cta-section h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .cta-section p {
+      max-width: 550px;
+      margin: 0 auto 32px;
+      color: var(--text-muted);
+    }
+    .btn-large {
+      padding: 16px 44px;
+      font-size: 1.2rem;
+    }
+
+    /* footer */
+    .footer {
+      border-top: 1px solid rgba(62, 123, 250, 0.2);
+      padding: 40px 0 50px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    /* responsive */
+    @media (max-width: 780px) {
+      .container {
+        padding: 0 24px;
+      }
+      .hero h1 {
+        font-size: 2.4rem;
+      }
+      .section-title {
+        font-size: 1.8rem;
+      }
+      .cta-section h2 {
+        font-size: 1.9rem;
+      }
+      .features-grid {
+        gap: 20px;
+      }
+      .feature-card {
+        width: 100%;
+        max-width: 320px;
+      }
+    }
+    @media (max-width: 550px) {
+      .navbar {
+        flex-direction: column;
+        align-items: center;
+      }
+      .hero h1 {
+        font-size: 2rem;
+      }
+      .btn-primary, .btn-secondary {
+        padding: 10px 24px;
+        font-size: 0.9rem;
+      }
+      .cta-group {
+        gap: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="logo-area">
+        <!-- Logo dari file lokal logo.jpg -->
+        <img src="logo.jpg" alt="MoXMessenger Logo" class="logo-img" id="mainLogo">
+        <span class="logo-text">MoXMessenger</span>
+      </div>
+      <div>
+        <button class="btn-outline-light" id="navExploreBtn"><i class="fas fa-compass"></i> Jelajahi</button>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero fade-up" id="heroSection">
+      <div class="hero-badge">
+        <i class="fas fa-bolt"></i> Next-gen messaging • real-time ready
+      </div>
+      <h1>Obrolan lebih cepat,<br> pengalaman lebih premium</h1>
+      <p class="hero-desc">MoXMessenger menghadirkan koneksi instan dengan antarmuka yang halus, aman, dan elegan. Rasakan sensasi chat masa depan.</p>
+      <div class="cta-group">
+        <a href="https://mox-messenger.vercel.app" target="_blank" rel="noopener noreferrer" class="btn-primary" id="heroChatBtn">
+          <span>Mulai Chat</span> <i class="fas fa-arrow-right"></i>
+        </a>
+        <button class="btn-secondary" id="watchDemoBtn">
+          <i class="fas fa-play"></i> Lihat preview
+        </button>
+      </div>
+    </section>
+
+    <!-- UI Preview Section (tampilan chat modern) -->
+    <section class="preview-section fade-up" id="previewSection">
+      <h2 class="section-title">Tampilan antarmuka<span style="color:#3E7BFA;"> · bersih & modern</span></h2>
+      <p class="section-sub">Setiap elemen dirancang untuk kenyamanan dan kecepatan — cocok untuk pengguna modern.</p>
+      <div class="ui-preview-card">
+        <div class="mockup-img">
+          <div class="chat-ui-demo">
+            <div class="chat-header-demo">
+              <i class="fas fa-circle" style="color:#3E7BFA; font-size: 12px;"></i>
+              <span style="font-weight: 500;">MoX Chat — Tim Inovasi</span>
+              <span style="margin-left: auto; font-size: 12px;"><i class="fas fa-lock"></i> end-to-end</span>
+            </div>
+            <div class="chat-bubbles">
+              <div class="bubble in">
+                <i class="fas fa-user-astronaut" style="margin-right: 8px;"></i> Halo! Desain UI MoX terlihat premium ya ✨
+              </div>
+              <div class="bubble out">
+                Setuju! Plus animasi halus bikin betah ngobrol.
+              </div>
+              <div class="bubble in">
+                Kapan rilis penuh? Aku siap beralih!
+              </div>
+              <div class="bubble out">
+                Segera! Cek tombol "Mulai Chat" untuk akses awal 🚀
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="fade-up">
+      <h2 class="section-title">Fitur <span style="color:#3E7BFA;">Premium</span> untuk Anda</h2>
+      <p class="section-sub">Kemudahan, kecepatan, dan kontrol penuh dalam genggaman.</p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+          <h3>Ultra Cepat</h3>
+          <p>Pesan terkirim instan dengan latensi rendah, didukung infrastruktur modern.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+          <h3>Keamanan Total</h3>
+          <p>Enkripsi ujung-ke-ujung dan privasi terjamin tanpa celah data.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-palette"></i></div>
+          <h3>Tema Dinamis</h3>
+          <p>Dark mode sempurna dan aksen warna yang bisa disesuaikan.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-vr-cardboard"></i></div>
+          <h3>Immersive UI</h3>
+          <p>Animasi halus & gestur modern membuat pengalaman chatting lebih hidup.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call To Action Section -->
+    <section class="cta-section fade-up">
+      <h2>Siap untuk pengalaman chat <span style="color:#3E7BFA;">berkelas?</span></h2>
+      <p>Bergabunglah dengan ribuan pengguna yang telah beralih ke MoXMessenger. Gratis dan tanpa batasan.</p>
+      <a href="https://mox-messenger.vercel.app" target="_blank" rel="noopener noreferrer" class="btn-primary btn-large" id="ctaButton">
+        Mulai Sekarang <i class="fas fa-comment-dots"></i>
+      </a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div>© 2025 MoXMessenger — Next generation messaging</div>
+    </footer>
+  </div>
+
+  <script>
+    // SCRIPT HANYA UNTUK ANIMASI & INTERAKSI SMOOTH (TIDAK ADA LOGIC CHAT / BACKEND)
+    
+    // Intersection Observer untuk animasi fade-up
+    const fadeElements = document.querySelectorAll('.fade-up');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('appear');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: "0px 0px -20px 0px" });
+    fadeElements.forEach(el => observer.observe(el));
+    
+    // tambahan manual untuk hero agar langsung muncul jika sudah terlihat
+    setTimeout(() => {
+      fadeElements.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 100) {
+          el.classList.add('appear');
+        }
+      });
+    }, 100);
+    
+    // Tombol "Lihat preview" scroll ke section preview
+    const watchDemoBtn = document.getElementById('watchDemoBtn');
+    if (watchDemoBtn) {
+      watchDemoBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const previewSection = document.getElementById('previewSection');
+        if (previewSection) {
+          previewSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    }
+    
+    // Tombol "Jelajahi" scroll ke fitur
+    const navExploreBtn = document.getElementById('navExploreBtn');
+    if (navExploreBtn) {
+      navExploreBtn.addEventListener('click', () => {
+        const featuresGrid = document.querySelector('.features-grid');
+        if (featuresGrid) {
+          featuresGrid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+    }
+    
+    // Efek hover tambahan pada card
+    const cards = document.querySelectorAll('.feature-card');
+    cards.forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        card.style.transition = 'all 0.25s ease';
+      });
+    });
+    
+    // Handling jika logo.jpg tidak ditemukan (fallback sederhana, tanpa upload)
+    const logoImg = document.getElementById('mainLogo');
+    if (logoImg) {
+      logoImg.onerror = function() {
+        // Jika logo gagal load, tampilkan ikon sebagai fallback (tanpa upload button)
+        this.style.display = 'none';
+        const fallbackDiv = document.createElement('div');
+        fallbackDiv.className = 'logo-img';
+        fallbackDiv.style.display = 'flex';
+        fallbackDiv.style.alignItems = 'center';
+        fallbackDiv.style.justifyContent = 'center';
+        fallbackDiv.style.background = 'linear-gradient(135deg, #2B5FDE, #3E7BFA)';
+        fallbackDiv.style.width = '48px';
+        fallbackDiv.style.height = '48px';
+        fallbackDiv.style.borderRadius = '20px';
+        fallbackDiv.innerHTML = '<i class="fas fa-comment-dots" style="font-size: 26px; color: white;"></i>';
+        this.parentNode.insertBefore(fallbackDiv, this);
+      };
+    }
+    
+    console.log("✨ MoXMessenger Landing Page — Frontend only, no backend, no chat logic, logo dari file lokal logo.jpg");
+  </script>
+</body>
+</html>
